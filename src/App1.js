@@ -15,12 +15,23 @@ import {
   Space,
   Divider,
 } from 'antd';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import {
+  DesktopOutlined,
+  FileOutlined,
+  PieChartOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+
+
 import { Breadcrumb, Layout, Menu } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import Icon from '@ant-design/icons';
+
 const { Header, Content, Footer, Sider } = Layout;
 const { Option } = Select;
 const { Title } = Typography;
+
 
 function getItem(label, key, icon, children) {
   return {
@@ -31,23 +42,30 @@ function getItem(label, key, icon, children) {
   };
 }
 
+const items = [
+  // getItem('Option 1', '1', <BeakerIcon style={{ fontSize: '11px', color: '#08c' }} />),
+  getItem('Option 1', '1', <Icon component={BeakerIcon} />),
+  getItem('Option 2', '2', <Icon component={ArchiveBoxIcon} />),
+  getItem('User', 'sub1', <UserOutlined />, [
+    getItem('Tom', '3'),
+    getItem('Bill', '4'),
+    getItem('Alex', '5'),
+  ]),
+  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+  getItem('Files', '9', <FileOutlined />),
+];
 
-const App = () => {return(
-  <Layout style={{
-    minHeight: '100vh',
-  }}>
-    <Sider
-      breakpoint="lg"
-      collapsedWidth="0"
-      onBreakpoint={(broken) => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
+const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  return (
+    <Layout
+      style={{
+        minHeight: '100vh',
       }}
     >
-      <div className="logo" />
-      <section style={{ textAlign: 'center', marginTop: 16, marginBottom: 20 }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <div className="logo" />
+        <section style={{ textAlign: 'center', marginTop: 16, marginBottom: 20 }}>
           <Space align="start">
             <img
               style={{ width: 20, height: 20 ,}}
@@ -59,36 +77,18 @@ const App = () => {return(
             </Title>
           </Space>
         </section>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={['4']}
-        items={[UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-          (icon, index) => ({
-            key: String(index + 1),
-            icon: React.createElement(icon),
-            label: `nav ${index + 1}`,
-          }),
-        )}
-      />
-    </Sider>
-    <Layout>
-      <Header
-        className="site-layout-sub-header-background"
-        style={{
-          padding: 0,
-        }}
-      />
-      <Content
-        style={{
-          margin: '24px 16px 0',
-        }}
-      >
-        <div
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      </Sider>
+      <Layout className="site-layout">
+        <Header
           className="site-layout-background"
           style={{
-            padding: 24,
-            minHeight: 360,
+            padding: 0,
+          }}
+        />
+        <Content
+          style={{
+            margin: '0 16px',
           }}
         >
           <Breadcrumb
@@ -151,17 +151,17 @@ const App = () => {return(
               </Form.Item>
             </Form>
           </div>
-        </div>
-      </Content>
-      <Footer
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
+        </Content>
+        <Footer
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          Ant Design ©2022
+        </Footer>
+      </Layout>
     </Layout>
-  </Layout>
-);
-      }
+  );
+};
+
 export default App;
